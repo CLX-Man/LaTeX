@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 
-.PHONY: clean clear tex rmpdf
+.PHONY: clean clear tex new
 .SECONDARY:
 
 PDF:
@@ -21,8 +21,10 @@ build/%.pdf: TEX/%.tex | build
 
 PDF/%.pdf: build/%.pdf | PDF
 	cp $< $@
-
 %.pdf: PDF/%.pdf ;
+
+new: | TEX	
+	cd TEX && latex.sh TEX
 
 clean:
 	rm -rf build
