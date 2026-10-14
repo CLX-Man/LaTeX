@@ -1,6 +1,7 @@
 SHELL := /bin/bash
 
-.PHONY: clean clear test.pdf tex rmpdf
+.PHONY: clean clear tex rmpdf
+.SECONDARY:
 
 PDF:
 	mkdir PDF
@@ -15,18 +16,17 @@ TEX:
 	mkdir TEX
 tex: TEX
 
-build/test.pdf: TEX/test.tex | build
+build/%.pdf: TEX/%.tex | build
 	pdflatex -interaction=nonstopmode -output-directory=build $<
 
-PDF/test.pdf: build/test.pdf | PDF
-	cp build/test.pdf PDF/test.pdf
+PDF/%.pdf: build/%.pdf | PDF
+	cp $< $@
 
-test.pdf: PDF/test.pdf
+%.pdf: PDF/%.pdf ;
 
 clean:
-	rm -f *.aux *.log *.out *.fdb_latexmk *.fls *.gz 
 	rm -rf build
 
-rmpdf:
-	rm -rf PDF
+clear:
 	make clean
+	rm -rf PDF
